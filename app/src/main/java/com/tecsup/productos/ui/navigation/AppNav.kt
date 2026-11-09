@@ -12,6 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.tecsup.productos.AppContainer
+import com.tecsup.productos.domain.model.Rol
+import com.tecsup.productos.ui.admin.AdminScreen
+import com.tecsup.productos.ui.admin.AdminViewModel
 import com.tecsup.productos.ui.UiState
 import com.tecsup.productos.ui.ViewModelFactory
 import com.tecsup.productos.ui.components.Cargando
@@ -29,6 +32,7 @@ object Ruta {
     const val LISTA = "lista"
     const val DETALLE = "detalle/{id}"
     const val FAVORITOS = "favoritos"
+    const val ADMIN = "admin"
     fun detalle(id: Int) = "detalle/$id"
 }
 
@@ -42,7 +46,7 @@ fun AppNav(container: AppContainer) {
     val listo by loginVm.listo.collectAsStateWithLifecycle()
     val estadoSesion by loginVm.estado.collectAsStateWithLifecycle()
 
-    if (!listo) {                      // todavía revisando si había sesión guardada
+    if (!listo) {
         Cargando("Verificando sesión…")
         return
     }
@@ -73,9 +77,21 @@ fun AppNav(container: AppContainer) {
             ListaScreen(
                 viewModel = vm,
                 onItemClick = { id -> nav.navigate(Ruta.detalle(id)) },
+                esAdmin = sesion?.rol == Rol.ADMIN,
                 onIrAFavoritos = { nav.navigate(Ruta.FAVORITOS) },
+                onIrAAdmin = { nav.navigate(Ruta.ADMIN) },
                 onCerrarSesion = loginVm::cerrarSesion
             )
+        }
+
+        composable(Ruta.ADMIN) {
+            // Segunda barrera: aunque alguien llegue a la ruta, sin rol ADMIN no ve el panel
+            if (sesion?.rol == Rol.ADMIN) {
+                val vm: AdminViewModel = viewModel(factory = factory)
+                AdminScreen(viewModel = vm, onVolver = { nav.popBackStack() })
+            } else {
+                LaunchedEffect(Unit) { nav.popBackStack() }
+            }
         }
 
         composable(Ruta.FAVORITOS) {

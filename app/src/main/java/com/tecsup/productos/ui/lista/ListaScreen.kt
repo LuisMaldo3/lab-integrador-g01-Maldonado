@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,7 +43,9 @@ import com.tecsup.productos.ui.components.ErrorView
 fun ListaScreen(
     viewModel: ListaViewModel,
     onItemClick: (Int) -> Unit = {},
+    esAdmin: Boolean = false,
     onIrAFavoritos: () -> Unit = {},
+    onIrAAdmin: () -> Unit = {},
     onCerrarSesion: () -> Unit = {}
 ) {
     // La pantalla SOLO observa el estado y llama funciones del ViewModel.
@@ -56,6 +59,12 @@ fun ListaScreen(
                 actions = {
                     IconButton(onClick = onIrAFavoritos) {
                         Icon(Icons.Default.Favorite, contentDescription = "Favoritos")
+                    }
+                    // El rol viene de Firestore (Sesion.rol); la pantalla solo lo muestra u oculta
+                    if (esAdmin) {
+                        IconButton(onClick = onIrAAdmin) {
+                            Icon(Icons.Default.Settings, contentDescription = "Panel Admin")
+                        }
                     }
                     IconButton(onClick = onCerrarSesion) {
                         Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Cerrar sesión")
