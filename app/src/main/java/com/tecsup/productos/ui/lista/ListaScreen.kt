@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
@@ -41,7 +42,8 @@ import com.tecsup.productos.ui.components.ErrorView
 fun ListaScreen(
     viewModel: ListaViewModel,
     onItemClick: (Int) -> Unit = {},
-    onIrAFavoritos: () -> Unit = {}
+    onIrAFavoritos: () -> Unit = {},
+    onCerrarSesion: () -> Unit = {}
 ) {
     // La pantalla SOLO observa el estado y llama funciones del ViewModel.
     val estado by viewModel.estado.collectAsStateWithLifecycle()
@@ -54,6 +56,9 @@ fun ListaScreen(
                 actions = {
                     IconButton(onClick = onIrAFavoritos) {
                         Icon(Icons.Default.Favorite, contentDescription = "Favoritos")
+                    }
+                    IconButton(onClick = onCerrarSesion) {
+                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Cerrar sesión")
                     }
                 }
             )
