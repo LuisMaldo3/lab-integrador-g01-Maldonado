@@ -1,0 +1,27 @@
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.kotlin/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Configuración local (ruta del SDK): nunca se sube
+local.properties
+
+# Firebase: contiene la clave de API del proyecto, NO se sube
+google-services.json
+app/google-services.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# APK y bundles generados
+*.apk
+*.aab
