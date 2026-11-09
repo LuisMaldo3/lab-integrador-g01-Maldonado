@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ fun ListaScreen(
 ) {
     // La pantalla SOLO observa el estado y llama funciones del ViewModel.
     val estado by viewModel.estado.collectAsStateWithLifecycle()
+    val aviso by viewModel.aviso.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -66,19 +68,17 @@ fun ListaScreen(
                 modifier = Modifier.padding(padding)
             )
 
-            is UiState.Exito -> {
+            is UiState.Exito -> Column(Modifier.padding(padding)) {
+                aviso?.let { AvisoSinConexion(it) }
                 if (e.datos.isEmpty()) {
                     ErrorView(
                         mensaje = "No hay productos para mostrar",
                         onReintentar = viewModel::refrescar,
-                        modifier = Modifier.padding(padding),
                         textoBoton = "Sincronizar"
                     )
                 } else {
                     LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
+                        modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(12.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -93,6 +93,21 @@ fun ListaScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun AvisoSinConexion(texto: String) {
+    Surface(
+        color = MaterialTheme.colorScheme.tertiaryContainer,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = texto,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onTertiaryContainer
+        )
     }
 }
 
