@@ -11,8 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,13 +39,23 @@ import com.tecsup.productos.ui.components.ErrorView
 @Composable
 fun ListaScreen(
     viewModel: ListaViewModel,
-    onItemClick: (Int) -> Unit = {}
+    onItemClick: (Int) -> Unit = {},
+    onIrAFavoritos: () -> Unit = {}
 ) {
     // La pantalla SOLO observa el estado y llama funciones del ViewModel.
     val estado by viewModel.estado.collectAsStateWithLifecycle()
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Smartphones") }) }
+        topBar = {
+            TopAppBar(
+                title = { Text("Smartphones") },
+                actions = {
+                    IconButton(onClick = onIrAFavoritos) {
+                        Icon(Icons.Default.Favorite, contentDescription = "Favoritos")
+                    }
+                }
+            )
+        }
     ) { padding ->
         when (val e = estado) {
             is UiState.Cargando -> Cargando(modifier = Modifier.padding(padding))
@@ -68,7 +83,11 @@ fun ListaScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(e.datos, key = { it.id }) { item ->
-                            ItemCard(item = item, onClick = { onItemClick(item.id) })
+                            ItemCard(
+                                item = item,
+                                onClick = { onItemClick(item.id) },
+                                onFavorito = { viewModel.alternarFavorito(item.id) }
+                            )
                         }
                     }
                 }
@@ -78,7 +97,7 @@ fun ListaScreen(
 }
 
 @Composable
-fun ItemCard(item: Item, onClick: () -> Unit) {
+fun ItemCard(item: Item, onClick: () -> Unit, onFavorito: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,6 +118,13 @@ fun ItemCard(item: Item, onClick: () -> Unit) {
                 .padding(start = 12.dp)) {
                 Text(item.titulo, style = MaterialTheme.typography.titleMedium)
                 Text(item.subtitulo, style = MaterialTheme.typography.bodyMedium)
+            }
+            IconButton(onClick = onFavorito) {
+                Icon(
+                    imageVector = if (item.esFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = if (item.esFavorito) "Quitar de favoritos" else "Marcar favorito",
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }

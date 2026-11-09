@@ -12,12 +12,15 @@ import com.tecsup.productos.AppContainer
 import com.tecsup.productos.ui.ViewModelFactory
 import com.tecsup.productos.ui.detalle.DetalleScreen
 import com.tecsup.productos.ui.detalle.DetalleViewModel
+import com.tecsup.productos.ui.favoritos.FavoritosScreen
+import com.tecsup.productos.ui.favoritos.FavoritosViewModel
 import com.tecsup.productos.ui.lista.ListaScreen
 import com.tecsup.productos.ui.lista.ListaViewModel
 
 object Ruta {
     const val LISTA = "lista"
     const val DETALLE = "detalle/{id}"
+    const val FAVORITOS = "favoritos"
     fun detalle(id: Int) = "detalle/$id"
 }
 
@@ -32,7 +35,17 @@ fun AppNav(container: AppContainer) {
             val vm: ListaViewModel = viewModel(factory = factory)
             ListaScreen(
                 viewModel = vm,
-                onItemClick = { id -> nav.navigate(Ruta.detalle(id)) }
+                onItemClick = { id -> nav.navigate(Ruta.detalle(id)) },
+                onIrAFavoritos = { nav.navigate(Ruta.FAVORITOS) }
+            )
+        }
+
+        composable(Ruta.FAVORITOS) {
+            val vm: FavoritosViewModel = viewModel(factory = factory)
+            FavoritosScreen(
+                viewModel = vm,
+                onItemClick = { id -> nav.navigate(Ruta.detalle(id)) },
+                onVolver = { nav.popBackStack() }
             )
         }
 
