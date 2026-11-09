@@ -9,7 +9,7 @@ activityCompose = "1.13.0"
 kotlin = "2.2.10"
 composeBom = "2026.02.01"
 # --- agregados para el laboratorio ---
-ksp = "2.2.10-2.0.2"          # KSP debe coincidir con Kotlin: <kotlin>-<ksp>
+ksp = "2.3.6"          # KSP debe coincidir con Kotlin: <kotlin>-<ksp>
 googleServices = "4.4.3"
 
 [libraries]
