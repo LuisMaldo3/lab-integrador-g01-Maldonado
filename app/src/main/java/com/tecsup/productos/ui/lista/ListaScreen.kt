@@ -18,31 +18,60 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.tecsup.productos.domain.model.Item
+import com.tecsup.productos.ui.UiState
+import com.tecsup.productos.ui.components.Cargando
+import com.tecsup.productos.ui.components.ErrorView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaScreen(
-    items: List<Item>,
+    viewModel: ListaViewModel,
     onItemClick: (Int) -> Unit = {}
 ) {
+    // La pantalla SOLO observa el estado y llama funciones del ViewModel.
+    val estado by viewModel.estado.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = { TopAppBar(title = { Text("Smartphones") }) }
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            contentPadding = PaddingValues(12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(items, key = { it.id }) { item ->
-                ItemCard(item = item, onClick = { onItemClick(item.id) })
+        when (val e = estado) {
+            is UiState.Cargando -> Cargando(modifier = Modifier.padding(padding))
+
+            is UiState.Error -> ErrorView(
+                mensaje = e.mensaje,
+                onReintentar = viewModel::refrescar,
+                modifier = Modifier.padding(padding)
+            )
+
+            is UiState.Exito -> {
+                if (e.datos.isEmpty()) {
+                    ErrorView(
+                        mensaje = "No hay productos para mostrar",
+                        onReintentar = viewModel::refrescar,
+                        modifier = Modifier.padding(padding),
+                        textoBoton = "Sincronizar"
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentPadding = PaddingValues(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(e.datos, key = { it.id }) { item ->
+                            ItemCard(item = item, onClick = { onItemClick(item.id) })
+                        }
+                    }
+                }
             }
         }
     }
