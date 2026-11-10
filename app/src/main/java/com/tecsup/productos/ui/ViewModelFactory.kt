@@ -6,10 +6,13 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.tecsup.productos.AppContainer
 import com.tecsup.productos.ui.admin.AdminViewModel
+import com.tecsup.productos.ui.comparador.CompararViewModel
 import com.tecsup.productos.ui.detalle.DetalleViewModel
 import com.tecsup.productos.ui.favoritos.FavoritosViewModel
 import com.tecsup.productos.ui.lista.ListaViewModel
 import com.tecsup.productos.ui.login.LoginViewModel
+import com.tecsup.productos.ui.login.RegisterViewModel
+import com.tecsup.productos.ui.login.RecuperarPasswordViewModel
 
 /** Fábrica única: recibe el AppContainer y entrega a cada ViewModel sus interfaces. */
 class ViewModelFactory(private val container: AppContainer) : ViewModelProvider.Factory {
@@ -29,9 +32,16 @@ class ViewModelFactory(private val container: AppContainer) : ViewModelProvider.
         modelClass.isAssignableFrom(LoginViewModel::class.java) ->
             LoginViewModel(container.authRepository)
 
+        modelClass.isAssignableFrom(CompararViewModel::class.java) ->
+            CompararViewModel(container.itemRepository)
+
         modelClass.isAssignableFrom(AdminViewModel::class.java) ->
             AdminViewModel(container.itemRepository, container.notificador)
 
+        modelClass.isAssignableFrom(RegisterViewModel::class.java) ->
+            RegisterViewModel(container.authRepository)
+        modelClass.isAssignableFrom(RecuperarPasswordViewModel::class.java) ->
+            RecuperarPasswordViewModel(container.authRepository)
         else -> throw IllegalArgumentException("ViewModel desconocido: ${modelClass.name}")
     } as T
 }

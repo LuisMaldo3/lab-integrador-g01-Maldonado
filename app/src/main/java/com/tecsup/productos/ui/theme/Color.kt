@@ -1,11 +1,15 @@
 package com.tecsup.productos.ui.theme
-
 import androidx.compose.ui.graphics.Color
-
-// Paleta "tecnología": azules y gris grafito
-val Azul = Color(0xFF1565C0)
-val AzulOscuro = Color(0xFF0D47A1)
-val AzulClaro = Color(0xFFBBDEFB)
-val Grafito = Color(0xFF263238)
-val Ambar = Color(0xFFFFB300)
-val Nieve = Color(0xFFF7F9FC)
+val Azul = Color(0xFF0864F8)
+val AzulOscuro = Color(0xFF0638AF)
+val AzulClaro = Color(0xFF73D7FF)
+val Grafito = Color(0xFF101A37)
+val Ambar = Color(0xFFFFC83D)
+val Nieve = Color(0xFFF6F8FF)
+val Royal = Color(0xFF0756E8)
+val Marino = Color(0xFF0B1D55)
+val Celeste = Color(0xFF25B6FF)
+val Violeta = Color(0xFF7E4EF6)
+val Coral = Color(0xFFFF526E)
+val Suave = Color(0xFFEAF2FF)
+val TextoSecundario = Color(0xFF63718B)

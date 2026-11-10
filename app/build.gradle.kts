@@ -51,6 +51,7 @@ dependencies {
     // ---- Laboratorio ----
     // Íconos de Material (desde Material3 1.4 ya no vienen incluidos)
     implementation("androidx.compose.material:material-icons-core:1.7.8")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     // Carga de imágenes desde URL
     implementation("io.coil-kt:coil-compose:2.7.0")
