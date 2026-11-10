@@ -51,6 +51,7 @@ dependencies {
     // ---- Laboratorio ----
     // Íconos de Material (desde Material3 1.4 ya no vienen incluidos)
     implementation("androidx.compose.material:material-icons-core:1.7.8")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     // Carga de imágenes desde URL
     implementation("io.coil-kt:coil-compose:2.7.0")
@@ -81,6 +82,8 @@ dependencies {
 
 
     testImplementation(libs.junit)
+    testImplementation(libs.junit)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")   // pruebas del ViewModel
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)

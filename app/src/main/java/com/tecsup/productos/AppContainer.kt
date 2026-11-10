@@ -9,6 +9,8 @@ import com.tecsup.productos.data.remote.RetrofitClient
 import com.tecsup.productos.data.repository.ItemRepository
 import com.tecsup.productos.data.repository.ItemRepositoryImpl
 import com.tecsup.productos.notification.Notificador
+import com.tecsup.productos.data.preferences.PreferenciasRepository
+import com.tecsup.productos.data.preferences.PreferenciasLocales
 import com.tecsup.productos.notification.NotificadorAndroid
 
 /**
@@ -37,6 +39,8 @@ class AppContainer(context: Context) {
     }
 
     val authRepository: AuthRepository by lazy { FirebaseAuthRepository() }
+
+    val preferencias: PreferenciasRepository by lazy { PreferenciasLocales(appContext) }
 
     val notificador: Notificador by lazy { NotificadorAndroid(appContext) }
 }
